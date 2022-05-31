@@ -1,0 +1,64 @@
+enable
+conf t
+hostname r-pb-jh
+ipv6 unicast-routing
+interface Se0/0/0
+description pb-vit
+clock rate 56000
+ip address 200.200.50.225 255.255.255.252
+ipv6 address 2001:DB8:ACAD:32FF::1/112
+ipv6 enable
+no shutdown
+exit
+interface Se0/0/1
+description ita-pb
+ip address 200.200.50.238 255.255.255.252
+ipv6 address 2001:DB8:ACAD:32FF::3:2/112
+ipv6 enable
+no shutdown
+exit
+interface fa0/0
+description Matriz
+ip address 200.200.50.1 255.255.255.192
+ipv6 address 2001:DB8:ACAD:3200::1/64
+ipv6 address FE80::1 link-local
+ipv6 enable
+no shutdown
+exit
+ip route 200.200.50.64 255.255.255.224 200.200.50.226
+ip route 200.200.50.96 255.255.255.224 200.200.50.226
+ip route 200.200.50.228 255.255.255.252 200.200.50.226
+ip route 200.200.50.232 255.255.255.252 200.200.50.226
+ip route 200.200.50.240 255.255.255.252 200.200.50.226
+ipv6 route 2001:DB8:ACAD:3201::/64 2001:DB8:ACAD:32FF::2
+ipv6 route 2001:DB8:ACAD:3202::/64 2001:DB8:ACAD:32FF::2
+ipv6 route 2001:DB8:ACAD:32FF::1:0/112 2001:DB8:ACAD:32FF::2
+ipv6 route 2001:DB8:ACAD:32FF::2:0/112 2001:DB8:ACAD:32FF::2
+ipv6 route 2001:DB8:ACAD:32FF::4:0/112 2001:DB8:ACAD:32FF::2
+service password-encryption
+ip domain name joaohenrique.pereiramachado.com.br
+crypto key generate rsa general-keys modulus 1024
+username joao secret ssh@Network1ng
+line vty 0 15
+exec-timeout 5
+login local
+transport input ssh 
+exit
+line con 0
+exec-timeout 5
+password @Cons-joaoh
+login
+exit
+enable secret @dmin-joao
+banner motd $	-------------------------------------------------------------------------------------------
+| 															|
+| 						Roteador Pato Branco 						|
+| 															|
+| 				ATENCAO Acesso Restrito a pessoas autorizadas! 				|
+| 															|
+| Administrador: JOAO HENRIQUE PEREIRA MACHADO (joaohenriquemachado@alunos.utfpr.edu.br) 	|
+| 															|
+-------------------------------------------------------------------------------------------$
+exit
+wr
+

@@ -1,0 +1,12 @@
+enable
+conf t
+hostname sw-filial1-jh
+ip default-gateway 200.200.50.65
+interface vlan1
+description Filial_1
+ip address 200.200.50.66 255.255.255.224
+no shutdown
+exit
+exit
+wr
+
