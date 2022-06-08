@@ -1,64 +1,141 @@
-enable
-conf t
+Building configuration...
+
+Current configuration : 2578 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+security passwords min-length 10
+!
 hostname r-pb-jh
+!
+login block-for 120 attempts 3 within 60
+!
+!
+enable secret 5 $1$mERr$sgxLRLEAK6FX.WH/bxifW/
+!
+!
+!
+!
+!
+!
+no ip cef
 ipv6 unicast-routing
-interface Se0/0/0
-description pb-vit
-clock rate 56000
-ip address 200.200.50.225 255.255.255.252
-ipv6 address 2001:DB8:ACAD:32FF::1/112
-ipv6 enable
-no shutdown
-exit
-interface Se0/0/1
-description ita-pb
-ip address 200.200.50.238 255.255.255.252
-ipv6 address 2001:DB8:ACAD:32FF::3:2/112
-ipv6 enable
-no shutdown
-exit
-interface fa0/0
-description Matriz
-ip address 200.200.50.1 255.255.255.192
-ipv6 address 2001:DB8:ACAD:3200::1/64
-ipv6 address FE80::1 link-local
-ipv6 enable
-no shutdown
-exit
-ip route 200.200.50.64 255.255.255.224 200.200.50.226
-ip route 200.200.50.96 255.255.255.224 200.200.50.226
-ip route 200.200.50.228 255.255.255.252 200.200.50.226
-ip route 200.200.50.232 255.255.255.252 200.200.50.226
-ip route 200.200.50.240 255.255.255.252 200.200.50.226
-ipv6 route 2001:DB8:ACAD:3201::/64 2001:DB8:ACAD:32FF::2
+!
+no ipv6 cef
+!
+!
+!
+username joao secret 5 $1$mERr$F5V/u2120qbEqnDJcxLe00
+!
+!
+license udi pid CISCO2811/K9 sn FTX1017RDQ9-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name joaohenrique.pereiramachado.com.br
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ description Matriz
+ ip address 200.200.50.1 255.255.255.192
+ duplex auto
+ speed auto
+ ipv6 address FE80::1 link-local
+ ipv6 address 2001:DB8:ACAD:3200::1/64
+ ipv6 enable
+!
+interface FastEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Serial0/0/0
+ description pb-vit
+ ip address 200.200.50.225 255.255.255.252
+ ipv6 address 2001:DB8:ACAD:32FF::1/112
+ ipv6 enable
+ clock rate 56000
+!
+interface Serial0/0/1
+ description ita-pb
+ ip address 200.200.50.238 255.255.255.252
+ ipv6 address 2001:DB8:ACAD:32FF::3:2/112
+ ipv6 enable
+ clock rate 2000000
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+ip route 200.200.50.64 255.255.255.224 200.200.50.226 
+ip route 200.200.50.96 255.255.255.224 200.200.50.226 
+ip route 200.200.50.228 255.255.255.252 200.200.50.226 
+ip route 200.200.50.232 255.255.255.252 200.200.50.226 
+ip route 200.200.50.240 255.255.255.252 200.200.50.226 
+!
+ip flow-export version 9
+!
 ipv6 route 2001:DB8:ACAD:3202::/64 2001:DB8:ACAD:32FF::2
 ipv6 route 2001:DB8:ACAD:32FF::1:0/112 2001:DB8:ACAD:32FF::2
 ipv6 route 2001:DB8:ACAD:32FF::2:0/112 2001:DB8:ACAD:32FF::2
 ipv6 route 2001:DB8:ACAD:32FF::4:0/112 2001:DB8:ACAD:32FF::2
-service password-encryption
-ip domain name joaohenrique.pereiramachado.com.br
-crypto key generate rsa general-keys modulus 1024
-username joao secret ssh@Network1ng
-line vty 0 15
-exec-timeout 5
-login local
-transport input ssh 
-exit
+ipv6 route 2001:DB8:ACAD:3201::/64 2001:DB8:ACAD:32FF::2
+!
+ip access-list extended sl_def_acl
+ deny tcp any any eq telnet
+ deny tcp any any eq www
+ deny tcp any any eq 22
+ permit tcp any any eq 22
+!
+no cdp run
+!
+banner motd ^C-------------------------------------------------------------------------------------------
+| |
+| Roteador Pato Branco |
+| |
+| ATENCAO Acesso Restrito a pessoas autorizadas! |
+| |
+| Administrador: JOAO HENRIQUE PEREIRA MACHADO (joaohenriquemachado@alunos.utfpr.edu.br) |
+| |
+-------------------------------------------------------------------------------------------^C
+!
+!
+!
+!
+!
 line con 0
-exec-timeout 5
-password @Cons-joaoh
-login
-exit
-enable secret @dmin-joao
-banner motd $	-------------------------------------------------------------------------------------------
-| 															|
-| 						Roteador Pato Branco 						|
-| 															|
-| 				ATENCAO Acesso Restrito a pessoas autorizadas! 				|
-| 															|
-| Administrador: JOAO HENRIQUE PEREIRA MACHADO (joaohenriquemachado@alunos.utfpr.edu.br) 	|
-| 															|
--------------------------------------------------------------------------------------------$
-exit
-wr
-
+ exec-timeout 5 0
+ password 7 08016F41070A481D1D0A030C
+ login
+!
+line aux 0
+!
+line vty 0 4
+ exec-timeout 5 0
+ login local
+ transport input ssh
+line vty 5 15
+ exec-timeout 5 0
+ login local
+ transport input ssh
+!
+!
+!
+end
