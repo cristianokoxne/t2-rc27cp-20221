@@ -153,8 +153,8 @@
 - [ ] ![Roteador Vitorino](r-vit-jh.txt)
 - [ ] ![Roteador Itapejara D'Oeste](r-ita-jh.txt)
 - [ ] ![Roteador Coronel Vivida](r-cv-jh.txt)
-- [ ] ![Switch Pato Branco](sw-pb-jh.txt)
-- [ ] ![Switch Francisco Beltrão](sw-fb-jh.txt)
-- [ ] ![Switch Coronel Vivida](sw-cv-jh.txt)
+- [ ] ![Switch Pato Branco](sw-matriz-jh.txt)
+- [ ] ![Switch Francisco Beltrão](sw-filial1-jh.txt)
+- [ ] ![Switch Coronel Vivida](sw-filial2-jh.txt)
 
 
